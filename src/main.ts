@@ -1,4 +1,5 @@
 import * as ROT from "rot-js";
+import { Game } from "./procrastination/game";
 
 window.onload = () => {
     if (!ROT.isSupported()) {
@@ -6,7 +7,6 @@ window.onload = () => {
     } else {
         const display = new ROT.Display({ width: 80, height: 20 });
         document.body.appendChild(display.getContainer());
-
-        display.draw(2, 10, "@");
+        const game = new Game(display);
     }
 };
