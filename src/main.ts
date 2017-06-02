@@ -1,8 +1,12 @@
-import { sayHi } from "./greet";
+import * as ROT from "rot-js";
 
-function show(divName: string, name: string) {
-    const elt = document.getElementById(divName);
-    elt.innerText = sayHi(name);
-}
+window.onload = () => {
+    if (!ROT.isSupported()) {
+        console.error("ROT.js is not supported in your environment.");
+    } else {
+        const display = new ROT.Display({ width: 80, height: 20 });
+        document.body.appendChild(display.getContainer());
 
-show("greeting", "ProcrastinateRLL");
+        display.draw(2, 10, "@");
+    }
+};
