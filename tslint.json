@@ -1,7 +1,12 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "interface-name": false,
+    "max-classes-per-file": false,
     "no-console": false,
-    "no-namespace": [true, "allow-declarations"]
+    "no-namespace": [true, "allow-declarations"],
+    "object-literal-sort-keys": false,
+    "one-variable-per-declaration": false,
+    "trailing-comma": false
   }
 }
