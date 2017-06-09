@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Coordinate } from "./geometry";
+import { Point } from "./geometry";
 
 interface Glyph {
     readonly char: string;
@@ -25,20 +25,48 @@ export class Tile {
     }
 }
 
-export class TileMap {
+export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
     private arr: Tile[][];
 
     constructor(public readonly width: number, public readonly height: number) {
-        this.arr = _.times(height, (y) => _.times(width, (x) => {
-            if (x === 0 || y === 0 || x === width - 1 || y === height - 1) {
-                return Tile.wallTile;
-            } else {
-                return Tile.floorTile;
-            }
-        }));
+        this.arr = _.times(height, (y) => _.times(width, (x) => Tile.nullTile));
     }
 
-    public tileAt(x: number, y: number): Tile {
-        return this.arr[y][x];
+    public get(point: Point): Tile {
+        return this.arr[point.y][point.x];
+    }
+
+    public set(point: Point, tile: Tile): void {
+       this.arr[point.y][point.x] = tile;
+    }
+
+    public [Symbol.iterator]() {
+        let x, y: number = -1;
+        const arr = this.arr;
+
+        return {
+            next(): IteratorResult<{ tile: Tile, point: Point }> {
+                ++x;
+                if (y === -1 || x >= arr[y].length) {
+                    x = 0;
+                    ++y;
+                }
+
+                if (y >= arr.length) {
+                    return {
+                        done: true,
+                        value: null
+                    };
+                }
+
+                return {
+                    done: false,
+                    value: {
+                        tile: arr[y][x],
+                        point: Point.at(x, y)
+                    }
+                };
+            }
+        };
     }
 }

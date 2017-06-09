@@ -1,4 +1,5 @@
 import * as ROT from "rot-js";
+import { Point } from "./geometry";
 import * as Map from "./map";
 
 export class Game {
@@ -8,10 +9,8 @@ export class Game {
         this.display = display;
         const map = new Map.TileMap(80, 20);
 
-        for (let y = 0; y < 20; ++y) {
-            for (let x = 0; x < 80; ++x) {
-                display.draw(x, y, map.tileAt(x, y).glyph.char);
-            }
+        for (const {tile, point} of map) {
+            display.draw(point.x, point.y, tile.glyph.char);
         }
     }
 
