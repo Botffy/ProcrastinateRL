@@ -15,6 +15,11 @@ declare module "rot-js" {
             width: number;
             height: number;
         }
+
+        var VK_LEFT: number;
+        var VK_UP: number;
+        var VK_RIGHT: number;
+        var VK_DOWN: number;
     }
 
     export = ROT;

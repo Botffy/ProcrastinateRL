@@ -16,7 +16,7 @@ export class Point {
         return new Point(x, y);
     }
 
-    constructor(public readonly x: number, public readonly y: number) {}
+    constructor(public x: number, public y: number) {}
 }
 
 export interface Size {

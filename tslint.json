@@ -3,6 +3,7 @@
   "rules": {
     "interface-name": false,
     "max-classes-per-file": false,
+    "member-ordering": false,
     "no-console": false,
     "no-namespace": [true, "allow-declarations"],
     "object-literal-sort-keys": false,
