@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Point } from "./geometry";
+import { Point, Rectangle, Size } from "./geometry";
 
 interface Glyph {
     readonly char: string;
@@ -28,8 +28,8 @@ export class Tile {
 export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
     private arr: Tile[][];
 
-    constructor(public readonly width: number, public readonly height: number) {
-        this.arr = _.times(height, (y) => _.times(width, (x) => Tile.nullTile));
+    constructor(public readonly size: Size) {
+        this.arr = _.times(this.size.height, (y) => _.times(this.size.width, (x) => Tile.nullTile));
     }
 
     public get(point: Point): Tile {
@@ -37,7 +37,25 @@ export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
     }
 
     public set(point: Point, tile: Tile): void {
-       this.arr[point.y][point.x] = tile;
+        this.arr[point.y][point.x] = tile;
+    }
+
+    public getViewPort(rectangle: Rectangle): TileMap {
+        const result = new TileMap(rectangle.size);
+
+        const minY = Math.max(rectangle.point.y, 0);
+        const minX = Math.max(rectangle.point.x, 0);
+
+        const maxY = Math.min(this.size.height, rectangle.point.y + rectangle.size.height);
+        const maxX = Math.min(this.size.width, rectangle.point.x + rectangle.size.width);
+
+        for (let y = minY; y < maxY; ++y) {
+            for (let x = minX; x < maxX; ++x) {
+                result.set(Point.at(x - rectangle.point.x, y - rectangle.point.y), this.arr[x][y]);
+            }
+        }
+
+        return result;
     }
 
     public [Symbol.iterator]() {

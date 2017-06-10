@@ -18,3 +18,13 @@ export class Point {
 
     constructor(public readonly x: number, public readonly y: number) {}
 }
+
+export interface Size {
+    readonly width: number;
+    readonly height: number;
+}
+
+export interface Rectangle {
+    readonly point: Point;
+    readonly size: Size;
+}
