@@ -43,14 +43,14 @@ export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
     public getViewPort(rectangle: Rectangle): TileMap {
         const result = new TileMap(rectangle.size);
 
-        const minY = Math.max(rectangle.point.y, 0);
-        const minX = Math.max(rectangle.point.x, 0);
+        const viewPort = new Rectangle(Point.origin, this.size).intersectionWith(rectangle);
 
-        const maxY = Math.min(this.size.height, rectangle.point.y + rectangle.size.height);
-        const maxX = Math.min(this.size.width, rectangle.point.x + rectangle.size.width);
+        if (viewPort === null) {
+            return result;
+        }
 
-        for (let y = minY; y < maxY; ++y) {
-            for (let x = minX; x < maxX; ++x) {
+        for (let y = viewPort.point.y; y < viewPort.point.y + viewPort.size.height; ++y) {
+            for (let x = viewPort.point.x; x < viewPort.point.x + viewPort.size.width; ++x) {
                 result.set(Point.at(x - rectangle.point.x, y - rectangle.point.y), this.arr[x][y]);
             }
         }

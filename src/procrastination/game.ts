@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import { Point } from "./geometry";
+import { Point, Rectangle } from "./geometry";
 import * as Map from "./map";
 
 export class Game {
@@ -31,7 +31,7 @@ export class Game {
     private draw(): void {
         const {width, height} = this.display.getOptions();
         const viewPortCenter = Point.at(this.centerPoint.x - width / 2, this.centerPoint.y - height / 2);
-        const viewPort = { point: viewPortCenter, size: { width, height }};
+        const viewPort = new Rectangle(viewPortCenter, {width, height});
 
         for (const {tile, point} of this.map.getViewPort(viewPort)) {
             this.display.draw(point.x, point.y, tile.glyph.char);
