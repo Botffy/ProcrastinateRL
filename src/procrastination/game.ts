@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import { Point, Rectangle } from "./geometry";
+import { Movement, Point, Rectangle } from "./geometry";
 import * as Map from "./map";
 
 export class Game {
@@ -45,21 +45,23 @@ export class Game {
     }
 
     public handleInput(inputData: KeyboardEvent): void {
+        let movement: Movement;
         switch (inputData.keyCode) {
             case ROT.VK_DOWN:
-                this.centerPoint.y += 1;
+                movement = { x: 0, y: 1 };
                 break;
             case ROT.VK_UP:
-                this.centerPoint.y -= 1;
+                movement = { x: 0, y: -1 };
                 break;
             case ROT.VK_LEFT:
-                this.centerPoint.x -= 1;
+                movement = { x: -1, y: 0 };
                 break;
             case ROT.VK_RIGHT:
-                this.centerPoint.x += 1;
+                movement = { x: 1, y: 0 };
                 break;
             default:
                 break;
         }
+        this.centerPoint = this.centerPoint.add(movement);
     }
 }

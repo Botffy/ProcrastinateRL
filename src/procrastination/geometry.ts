@@ -18,11 +18,20 @@ export class Point {
 
     public static readonly origin = Point.at(0, 0);
 
-    constructor(public x: number, public y: number) {}
+    constructor(public readonly x: number, public readonly y: number) {}
 
     public clone(): Point {
         return new Point(this.x, this.y);
     }
+
+    public add(movement: Movement): Point {
+        return Point.at(this.x + movement.x, this.y + movement.y);
+    }
+}
+
+export interface Movement {
+    readonly x: number;
+    readonly y: number;
 }
 
 export interface Size {
@@ -36,7 +45,7 @@ export class Rectangle {
     /**
      *  The four corner points of the rectangle, given in counterclockwise order.
      */
-    public points(): [Point, Point, Point, Point] {
+    public corners(): [Point, Point, Point, Point] {
         return [
             this.point,
             Point.at(this.point.x + this.size.width, this.point.y),
@@ -46,8 +55,8 @@ export class Rectangle {
     }
 
     public intersectionWith(that: Rectangle): Rectangle {
-        const [p11, , p12, ] = this.points();
-        const [p21, , p22, ] = that.points();
+        const [p11, , p12, ] = this.corners();
+        const [p21, , p22, ] = that.corners();
 
         const minY = Math.max(p11.y, p21.y);
         const minX = Math.max(p11.x, p21.x);
