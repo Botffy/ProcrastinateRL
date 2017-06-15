@@ -45,7 +45,7 @@ export class Game {
     }
 
     public handleInput(inputData: KeyboardEvent): void {
-        let movement: Movement;
+        let movement: Movement = null;
         switch (inputData.keyCode) {
             case ROT.VK_DOWN:
                 movement = { x: 0, y: 1 };
@@ -62,6 +62,9 @@ export class Game {
             default:
                 break;
         }
-        this.centerPoint = this.centerPoint.add(movement);
+
+        if (movement !== null) {
+            this.centerPoint = this.centerPoint.add(movement);
+        }
     }
 }
