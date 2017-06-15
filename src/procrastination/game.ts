@@ -47,27 +47,29 @@ export class Game {
         return this.display;
     }
 
+    private moveHero(movement: Movement): void {
+        const pos = this.centerPoint.add(movement);
+        if (this.map.get(pos).isPassable) {
+            this.centerPoint = pos;
+        }
+    }
+
     public handleInput(inputData: KeyboardEvent): void {
-        let movement: Movement = null;
         switch (inputData.keyCode) {
             case ROT.VK_DOWN:
-                movement = { x: 0, y: 1 };
+                this.moveHero({ x: 0, y: 1 });
                 break;
             case ROT.VK_UP:
-                movement = { x: 0, y: -1 };
+                this.moveHero({ x: 0, y: -1 });
                 break;
             case ROT.VK_LEFT:
-                movement = { x: -1, y: 0 };
+                this.moveHero({ x: -1, y: 0 });
                 break;
             case ROT.VK_RIGHT:
-                movement = { x: 1, y: 0 };
+                this.moveHero({ x: 1, y: 0 });
                 break;
             default:
                 break;
-        }
-
-        if (movement !== null) {
-            this.centerPoint = this.centerPoint.add(movement);
         }
     }
 }
