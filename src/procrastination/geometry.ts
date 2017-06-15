@@ -54,7 +54,7 @@ export class Rectangle {
         ];
     }
 
-    public intersectionWith(that: Rectangle): Rectangle {
+    public intersectWith(that: Rectangle): Rectangle {
         const [p11, , p12, ] = this.corners();
         const [p21, , p22, ] = that.corners();
 

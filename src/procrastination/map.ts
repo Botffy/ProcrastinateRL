@@ -8,20 +8,17 @@ interface Glyph {
 }
 
 export class Tile {
-    public static readonly nullTile = new Tile({ char: " " });
-    public static readonly wallTile = new Tile({ char: "#" });
-    public static readonly floorTile = new Tile({ char: "." });
-
-    private static defaultGlyph: Glyph = {
-        char: " ",
-        fgColor: null,
-        bgColor: null
-    };
+    public static readonly nullTile = new Tile({
+        glyph: { char: " ", bgColor: null, fgColor: null },
+        isPassable: false
+    });
 
     public readonly glyph: Glyph;
+    public readonly isPassable: boolean;
 
-    constructor(glyph: Glyph) {
-        this.glyph = { ...Tile.defaultGlyph, ...glyph };
+    constructor(initializer: { glyph: Glyph, isPassable: boolean }) {
+        this.glyph = Object.assign({}, initializer.glyph);
+        this.isPassable = initializer.isPassable;
     }
 }
 
@@ -40,10 +37,14 @@ export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
         this.arr[point.y][point.x] = tile;
     }
 
+    public asRectangle(): Rectangle {
+        return new Rectangle(Point.origin, this.size);
+    }
+
     public getViewPort(rectangle: Rectangle): TileMap {
         const result = new TileMap(rectangle.size);
 
-        const viewPort = new Rectangle(Point.origin, this.size).intersectionWith(rectangle);
+        const viewPort = this.asRectangle().intersectWith(rectangle);
 
         if (viewPort === null) {
             return result;

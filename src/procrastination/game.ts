@@ -3,6 +3,9 @@ import { Movement, Point, Rectangle } from "./geometry";
 import * as Map from "./map";
 
 export class Game {
+    private readonly wallTile = new Map.Tile({ glyph: { char: "#" }, isPassable: false });
+    private readonly floorTile = new Map.Tile({ glyph: { char: "." }, isPassable: true });
+
     private display;
     private map: Map.TileMap;
     private centerPoint: Point;
@@ -18,9 +21,9 @@ export class Game {
         for (let y = 0; y < this.map.size.height; ++y) {
             for (let x = 0; x < this.map.size.width; ++x) {
                 if (x === 0 || y === 0 || y === this.map.size.height - 1 || x === this.map.size.width - 1) {
-                    this.map.set(Point.at(x, y), Map.Tile.wallTile);
+                    this.map.set(Point.at(x, y), this.wallTile);
                 } else {
-                    this.map.set(Point.at(x, y), Map.Tile.floorTile);
+                    this.map.set(Point.at(x, y), this.floorTile);
                 }
             }
         }
@@ -34,7 +37,7 @@ export class Game {
         const viewPort = new Rectangle(viewPortCenter, {width, height});
 
         for (const {tile, point} of this.map.getViewPort(viewPort)) {
-            this.display.draw(point.x, point.y, tile.glyph.char);
+            this.display.draw(point.x, point.y, tile.glyph.char, tile.glyph.fgColor, tile.glyph.bgColor);
         }
 
         this.display.draw(this.centerPoint.x - viewPort.point.x, this.centerPoint.y - viewPort.point.y, "@");
