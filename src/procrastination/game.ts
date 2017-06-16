@@ -31,9 +31,12 @@ export class Game {
         this.draw();
     }
 
-    private draw(): void {
+    public draw(): void {
         const {width, height} = this.display.getOptions();
-        const viewPortCenter = Point.at(this.centerPoint.x - width / 2, this.centerPoint.y - height / 2);
+        const viewPortCenter = Point.at(
+            this.centerPoint.x - Math.floor(width / 2),
+            this.centerPoint.y - Math.floor(height / 2)
+        );
         const viewPort = new Rectangle(viewPortCenter, {width, height});
 
         for (const {tile, point} of this.map.getViewPort(viewPort)) {
