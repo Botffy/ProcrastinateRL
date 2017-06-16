@@ -1,6 +1,6 @@
 
 declare module "rot-js" {
-    module ROT {
+    namespace ROT {
         function isSupported(): boolean;
 
         class Display {
@@ -8,20 +8,23 @@ declare module "rot-js" {
             public getContainer(): Node;
             public draw(x: number, y: number, character: any, fgColor?: string, bgColor?: string): void;
             public drawText(x: number, y: number, text: string, width?: number): void;
-            public getOptions(): DisplayOptions
+            public getOptions(): DisplayOptions;
+            public setOptions(options: DisplayOptions): void;
+            public computeSize(availPixelWidth: number, availPixelHeight: number): [number, number];
         }
 
         interface DisplayOptions {
-            width: number;
-            height: number;
+            width?: number;
+            height?: number;
+            fg?: string;
+            bg?: string;
         }
 
-        var VK_LEFT: number;
-        var VK_UP: number;
-        var VK_RIGHT: number;
-        var VK_DOWN: number;
+        const VK_LEFT: number;
+        const VK_UP: number;
+        const VK_RIGHT: number;
+        const VK_DOWN: number;
     }
 
     export = ROT;
 }
-
