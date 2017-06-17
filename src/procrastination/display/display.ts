@@ -1,5 +1,5 @@
-import { Point, Rectangle, Size } from "../geometry";
-import { Glyph, TileMap } from "../map";
+import { Point, Rectangle, Size } from "../map/geometry";
+import { Glyph, TileMap } from "../map/map";
 
 export interface Display {
     draw(viewPort: TileMap): void;

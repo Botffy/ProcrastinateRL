@@ -1,7 +1,7 @@
 import * as ROT from "rot-js";
 import { Display } from "./display/display";
-import { Movement, Point, Rectangle } from "./geometry";
-import * as Map from "./map";
+import { Movement, Point, Rectangle } from "./map/geometry";
+import * as Map from "./map/map";
 
 export class Game {
     private readonly wallTile = new Map.Tile({ glyph: { char: "#" }, isPassable: false });

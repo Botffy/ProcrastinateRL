@@ -3,8 +3,8 @@ import * as ROT from "rot-js";
 
 import { Display } from "./display";
 
-import { Point, Rectangle, Size } from "../geometry";
-import { Glyph, TileMap } from "../map";
+import { Point, Rectangle, Size } from "../map/geometry";
+import { Glyph, TileMap } from "../map/map";
 
 function isSameGlyph(g1: Glyph, g2: Glyph): boolean {
     return g1.char === g2.char
