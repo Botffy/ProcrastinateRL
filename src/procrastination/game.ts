@@ -5,10 +5,14 @@ import { Movement, Point, Rectangle } from "./map/geometry";
 import * as Map from "./map/map";
 
 export class Game {
-
     private display: Display;
     private map: Map.TileMap;
     private centerPoint: Point;
+
+    private readonly tiles = {
+        wallTile: new Map.Tile({ glyph: { char: "#" }, isPassable: false }),
+        floorTile: new Map.Tile({ glyph: { char: "." }, isPassable: true })
+    };
 
     constructor(display: Display) {
         window.addEventListener("keydown", (e) => {
@@ -18,7 +22,7 @@ export class Game {
 
         this.display = display;
 
-        this.map = Generator.rotDungeonGenerator({ width: 80, height: 80 });
+        this.map = Generator.rotDungeonGenerator({ width: 80, height: 80 }, this.tiles);
         this.centerPoint = Point.at(1, 1);
         this.draw();
     }

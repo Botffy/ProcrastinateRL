@@ -1,4 +1,9 @@
 import { Size } from "./geometry";
-import { TileMap } from "./map";
+import { Tile, TileMap } from "./map";
 
-export type Generator = (size: Size) => TileMap;
+export interface TileDefinition {
+    readonly wallTile: Tile;
+    readonly floorTile: Tile;
+}
+
+export type Generator = (size: Size, tiles: TileDefinition) => TileMap;
