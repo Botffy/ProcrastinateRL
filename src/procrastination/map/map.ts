@@ -1,6 +1,8 @@
 import * as _ from "lodash";
 import { Point, Rectangle, Size } from "./geometry";
 
+export { Generator, getGenerator } from "./generator";
+
 export interface Glyph {
     readonly char: string;
     readonly bgColor?: string;
@@ -20,6 +22,11 @@ export class Tile {
         this.glyph = Object.assign({}, initializer.glyph);
         this.isPassable = initializer.isPassable;
     }
+}
+
+export interface TileDefinition {
+    wallTile: Tile;
+    floorTile: Tile;
 }
 
 export class TileMap implements Iterable<{ tile: Tile, point: Point }> {

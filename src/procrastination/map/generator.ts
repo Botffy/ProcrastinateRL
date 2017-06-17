@@ -1,9 +1,13 @@
 import { Size } from "./geometry";
-import { Tile, TileMap } from "./map";
+import { Tile, TileDefinition, TileMap } from "./map";
 
-export interface TileDefinition {
-    readonly wallTile: Tile;
-    readonly floorTile: Tile;
-}
+import { rotDungeonGenerator } from "./generators/rot-dungeon";
 
 export type Generator = (size: Size, tiles: TileDefinition) => TileMap;
+
+export function getGenerator(str: "ROTDungeon"): Generator {
+    switch (str) {
+        case "ROTDungeon":
+            return rotDungeonGenerator;
+    }
+}

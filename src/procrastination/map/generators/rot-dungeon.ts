@@ -1,6 +1,5 @@
-import { Generator, TileDefinition } from "../generator";
 import { Point, Size } from "../geometry";
-import { Tile, TileMap } from "../map";
+import { Tile, TileDefinition, TileMap } from "../map";
 
 import * as ROT from "rot-js";
 
