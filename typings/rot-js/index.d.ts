@@ -17,6 +17,9 @@ declare module "rot-js" {
         interface DisplayOptions {
             width?: number;
             height?: number;
+            fontSize?: number;
+            fontFamily?: string;
+            fontStyle?: string;
             fg?: string;
             bg?: string;
         }
