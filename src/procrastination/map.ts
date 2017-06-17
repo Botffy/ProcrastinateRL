@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { Point, Rectangle, Size } from "./geometry";
 
-interface Glyph {
+export interface Glyph {
     readonly char: string;
     readonly bgColor?: string;
     readonly fgColor?: string;

@@ -6,6 +6,7 @@ declare module "rot-js" {
         class Display {
             public constructor(options: DisplayOptions);
             public getContainer(): Node;
+            public clear(): void;
             public draw(x: number, y: number, character: any, fgColor?: string, bgColor?: string): void;
             public drawText(x: number, y: number, text: string, width?: number): void;
             public getOptions(): DisplayOptions;

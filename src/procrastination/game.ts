@@ -1,4 +1,5 @@
 import * as ROT from "rot-js";
+import { Display } from "./display/display";
 import { Movement, Point, Rectangle } from "./geometry";
 import * as Map from "./map";
 
@@ -6,11 +7,11 @@ export class Game {
     private readonly wallTile = new Map.Tile({ glyph: { char: "#" }, isPassable: false });
     private readonly floorTile = new Map.Tile({ glyph: { char: "." }, isPassable: true });
 
-    private display;
+    private display: Display;
     private map: Map.TileMap;
     private centerPoint: Point;
 
-    constructor(display: ROT.Display) {
+    constructor(display: Display) {
         window.addEventListener("keydown", (e) => {
             this.handleInput(e);
             this.draw();
@@ -32,22 +33,20 @@ export class Game {
     }
 
     public draw(): void {
-        const {width, height} = this.display.getOptions();
+        const size = this.display.getSize();
         const viewPortCenter = Point.at(
-            this.centerPoint.x - Math.floor(width / 2),
-            this.centerPoint.y - Math.floor(height / 2)
+            this.centerPoint.x - Math.floor(size.width / 2),
+            this.centerPoint.y - Math.floor(size.height / 2)
         );
-        const viewPort = new Rectangle(viewPortCenter, {width, height});
+        const viewPort = new Rectangle(viewPortCenter, size);
 
-        for (const {tile, point} of this.map.getViewPort(viewPort)) {
-            this.display.draw(point.x, point.y, tile.glyph.char, tile.glyph.fgColor, tile.glyph.bgColor);
-        }
+        this.display.draw(this.map.getViewPort(viewPort));
+        this.display.draw(
+            Point.at({x: this.centerPoint.x - viewPort.point.x, y: this.centerPoint.y - viewPort.point.y}),
+            { char: "@" }
+        );
 
-        this.display.draw(this.centerPoint.x - viewPort.point.x, this.centerPoint.y - viewPort.point.y, "@");
-    }
-
-    public getDisplay(): ROT.Display {
-        return this.display;
+        this.display.flip();
     }
 
     private moveHero(movement: Movement): void {

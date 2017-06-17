@@ -1,4 +1,5 @@
 import * as ROT from "rot-js";
+import { ROTDisplay } from "./procrastination/display/rot-display";
 import { Game } from "./procrastination/game";
 
 function resizeDisplay(display: ROT.Display) {
@@ -22,14 +23,15 @@ window.onload = () => {
     if (!ROT.isSupported()) {
         console.error("ROT.js is not supported in your environment.");
     } else {
-        const display = new ROT.Display({});
-        resizeDisplay(display);
+        const canvas = new ROT.Display({});
+        resizeDisplay(canvas);
 
-        document.body.appendChild(display.getContainer());
+        document.body.appendChild(canvas.getContainer());
+        const display = new ROTDisplay(canvas);
         const game = new Game(display);
 
         window.onresize = () => {
-            resizeDisplay(display);
+            resizeDisplay(canvas);
             game.draw();
         };
     }
