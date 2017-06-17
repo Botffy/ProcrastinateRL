@@ -14,6 +14,13 @@ declare module "rot-js" {
             public computeSize(availPixelWidth: number, availPixelHeight: number): [number, number];
         }
 
+        namespace Map {
+            class Digger {
+                public constructor(width: number, height: number);
+                create(callback: (x: number, y: number, value: number) => void): void;
+            }
+        }
+
         interface DisplayOptions {
             width?: number;
             height?: number;

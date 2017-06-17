@@ -1,11 +1,10 @@
 import * as ROT from "rot-js";
 import { Display } from "./display/display";
+import * as Generator from "./map/generators/rot-dungeon";
 import { Movement, Point, Rectangle } from "./map/geometry";
 import * as Map from "./map/map";
 
 export class Game {
-    private readonly wallTile = new Map.Tile({ glyph: { char: "#" }, isPassable: false });
-    private readonly floorTile = new Map.Tile({ glyph: { char: "." }, isPassable: true });
 
     private display: Display;
     private map: Map.TileMap;
@@ -18,16 +17,8 @@ export class Game {
         });
 
         this.display = display;
-        this.map = new Map.TileMap({ width: 200, height: 200 });
-        for (let y = 0; y < this.map.size.height; ++y) {
-            for (let x = 0; x < this.map.size.width; ++x) {
-                if (x === 0 || y === 0 || y === this.map.size.height - 1 || x === this.map.size.width - 1) {
-                    this.map.set(Point.at(x, y), this.wallTile);
-                } else {
-                    this.map.set(Point.at(x, y), this.floorTile);
-                }
-            }
-        }
+
+        this.map = Generator.rotDungeonGenerator({ width: 80, height: 80 });
         this.centerPoint = Point.at(1, 1);
         this.draw();
     }
@@ -52,7 +43,10 @@ export class Game {
     private moveHero(movement: Movement): void {
         const pos = this.centerPoint.add(movement);
         if (this.map.get(pos).isPassable) {
+            console.log("Hero moves to (%d,%d)", pos.x, pos.y);
             this.centerPoint = pos;
+        } else {
+            console.log("Hero cannot move to (%d,%d)", pos.x, pos.y);
         }
     }
 
