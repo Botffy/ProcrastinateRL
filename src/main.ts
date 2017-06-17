@@ -2,13 +2,20 @@ import * as ROT from "rot-js";
 import { Game } from "./procrastination/game";
 
 function resizeDisplay(display: ROT.Display) {
+    const minWidth = 40;
+    const minHeight = 20;
+
     const w = document.documentElement.clientWidth;
     const h = document.documentElement.clientHeight;
 
-    const [width, height] = display.computeSize(w, h);
-    console.log(width, height);
+    let [width, height] = display.computeSize(w, h);
+    width -= 1;
+    height -= 1;
+    width = width < minWidth ? minWidth : width;
+    height = height < minHeight ? minHeight : height;
 
-    display.setOptions({ width: width - 1, height: height - 1 });
+    console.log("Resizing display to (%d, %d)", width, height);
+    display.setOptions({ width, height });
 }
 
 window.onload = () => {
