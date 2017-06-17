@@ -52,7 +52,7 @@ export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
 
         for (let y = viewPort.point.y; y < viewPort.point.y + viewPort.size.height; ++y) {
             for (let x = viewPort.point.x; x < viewPort.point.x + viewPort.size.width; ++x) {
-                result.set(Point.at(x - rectangle.point.x, y - rectangle.point.y), this.arr[x][y]);
+                result.set(Point.at(x - rectangle.point.x, y - rectangle.point.y), this.arr[y][x]);
             }
         }
 
