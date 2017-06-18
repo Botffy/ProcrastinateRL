@@ -37,10 +37,19 @@ export class TileMap implements Iterable<{ tile: Tile, point: Point }> {
     }
 
     public get(point: Point): Tile {
+        if (point.x < 0 || point.x >= this.size.width || point.y < 0 || point.y >= this.size.height) {
+            return Tile.nullTile;
+        }
+
         return this.arr[point.y][point.x];
     }
 
     public set(point: Point, tile: Tile): void {
+        if (point.x < 0 || point.x >= this.size.width || point.y < 0 || point.y >= this.size.height) {
+            console.warn("Point (%d;%d) out of bounds", point.x, point.y);
+            return;
+        }
+
         this.arr[point.y][point.x] = tile;
     }
 

@@ -27,6 +27,19 @@ export class Point {
     public add(movement: Movement): Point {
         return Point.at(this.x + movement.x, this.y + movement.y);
     }
+
+    public neighbours(): Point[] {
+        return [
+            new Point(this.x - 1, this.y - 1),
+            new Point(this.x - 1, this.y),
+            new Point(this.x - 1, this.y + 1),
+            new Point(this.x, this.y + 1),
+            new Point(this.x + 1, this.y + 1),
+            new Point(this.x + 1, this.y),
+            new Point(this.x + 1, this.y - 1),
+            new Point(this.x, this.y - 1)
+        ];
+    }
 }
 
 export interface Movement {

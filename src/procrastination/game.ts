@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 import * as ROT from "rot-js";
 import { Display } from "./display/display";
 import * as Generator from "./map/generators/rot-dungeon";
@@ -23,7 +25,35 @@ export class Game {
         this.display = display;
 
         this.map = Generator.rotDungeonGenerator({ width: 80, height: 80 }, this.tiles);
-        this.centerPoint = Point.at(1, 1);
+
+        let p: Point;
+        const q = [Point.at(0, 0)];
+        const v = [];
+
+        while (!_.isEmpty(q)) {
+            p = q.shift();
+
+            if (_.find(v, (vv) => vv.x === p.x && vv.y === p.y)) {
+                continue;
+            }
+
+            if (this.map.get(p).isPassable) {
+                this.centerPoint = p;
+                break;
+            }
+
+            if (this.map.get(p) === Map.Tile.nullTile) {
+                continue;
+            }
+
+            v.push(p);
+            q.push(...p.neighbours());
+        }
+
+        if (_.isNil(this.centerPoint)) {
+            throw new Error("Could not find starting location :/");
+        }
+
         this.draw();
     }
 
