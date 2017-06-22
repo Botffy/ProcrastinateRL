@@ -12,15 +12,18 @@ export interface Glyph {
 export class Tile {
     public static readonly nullTile = new Tile({
         glyph: { char: " ", bgColor: null, fgColor: null },
-        isPassable: false
+        isPassable: false,
+        isTransparent: false
     });
 
     public readonly glyph: Glyph;
     public readonly isPassable: boolean;
+    public readonly isTransparent: boolean;
 
-    constructor(initializer: { glyph: Glyph, isPassable: boolean }) {
+    constructor(initializer: { glyph: Glyph, isPassable: boolean, isTransparent: boolean }) {
         this.glyph = Object.assign({}, initializer.glyph);
         this.isPassable = initializer.isPassable;
+        this.isTransparent = initializer.isTransparent;
     }
 }
 

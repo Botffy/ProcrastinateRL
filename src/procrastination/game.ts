@@ -9,11 +9,13 @@ import * as Map from "./map/map";
 export class Game {
     private display: Display;
     private map: Map.TileMap;
+    private fov: ROT.FOV.FOV;
     private centerPoint: Point;
+    private heroSees: Set<string>;
 
     private readonly tiles = {
-        wallTile: new Map.Tile({ glyph: { char: "#" }, isPassable: false }),
-        floorTile: new Map.Tile({ glyph: { char: "." }, isPassable: true })
+        wallTile: new Map.Tile({ glyph: { char: "#" }, isPassable: false, isTransparent: false }),
+        floorTile: new Map.Tile({ glyph: { char: "." }, isPassable: true, isTransparent: true })
     };
 
     constructor(display: Display) {
@@ -54,6 +56,11 @@ export class Game {
             throw new Error("Could not find starting location :/");
         }
 
+        this.fov = new ROT.FOV.PreciseShadowcasting((x: number, y: number) => {
+            return this.map.get(Point.at(x, y)).isTransparent;
+        });
+
+        this.updateHeroVision();
         this.draw();
     }
 
@@ -64,8 +71,14 @@ export class Game {
             this.centerPoint.y - Math.floor(size.height / 2)
         );
         const viewPort = new Rectangle(viewPortCenter, size);
+        const map = this.map.getViewPort(viewPort);
+        for (const {tile, point} of map) {
+            if (!this.heroSees.has((point.x + viewPort.point.x) + "," + (point.y + viewPort.point.y))) {
+                map.set(point, Map.Tile.nullTile);
+            }
+        }
 
-        this.display.draw(this.map.getViewPort(viewPort));
+        this.display.draw(map);
         this.display.draw(
             Point.at({x: this.centerPoint.x - viewPort.point.x, y: this.centerPoint.y - viewPort.point.y}),
             { char: "@" }
@@ -79,9 +92,22 @@ export class Game {
         if (this.map.get(pos).isPassable) {
             console.log("Hero moves to (%d,%d)", pos.x, pos.y);
             this.centerPoint = pos;
+            this.updateHeroVision();
         } else {
             console.log("Hero cannot move to (%d,%d)", pos.x, pos.y);
         }
+    }
+
+    private updateHeroVision() {
+        this.heroSees = new Set<string>();
+        this.fov.compute(
+            this.centerPoint.x, this.centerPoint.y, 7,
+            (x: number, y: number, r: number, visibility: number) => {
+                if (visibility > 0) {
+                    this.heroSees.add(x + "," + y);
+                }
+            }
+        );
     }
 
     public handleInput(inputData: KeyboardEvent): void {

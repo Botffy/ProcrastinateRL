@@ -17,7 +17,24 @@ declare module "rot-js" {
         namespace Map {
             class Digger {
                 public constructor(width: number, height: number);
-                create(callback: (x: number, y: number, value: number) => void): void;
+                public create(callback: (x: number, y: number, value: number) => void): void;
+            }
+        }
+
+        namespace FOV {
+            interface FOV {
+                compute(
+                    x: number, y: number, R: number,
+                    callback: (x: number, y: number, r: number, visibility: number) => void
+                ): void;
+            }
+
+            class PreciseShadowcasting implements FOV {
+                public constructor(lightPasses: (x: number, y: number) => boolean);
+                public compute(
+                    x: number, y: number, R: number,
+                    callback: (x: number, y: number, r: number, visibility: number) => void
+                ): void;
             }
         }
 
